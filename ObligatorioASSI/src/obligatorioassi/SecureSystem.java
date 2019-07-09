@@ -16,24 +16,23 @@ public class SecureSystem {
 
 	public static void main(String[] args) throws FileNotFoundException {
 
-		// Create the SecureSystem and take in the passed txt file
+		// Crea un securitySystem y pasa el txt en el filePath
 		SecureSystem sys = new SecureSystem("C:\\Users\\santi\\OneDrive\\Escritorio\\Santiago\\ORT\\ASSI\\ObligatorioASSI\\pruebaArchivo.txt");
 		File file2 = new File("C:\\Users\\santi\\OneDrive\\Escritorio\\Santiago\\ORT\\ASSI\\ObligatorioASSI\\pruebaArchivo.txt");
 
-		// Create low and high Security Levels
+		// Crea ambos niveles de seguridaad
 		SecurityLevel low = SecurityLevel.LOW;
 		SecurityLevel high = SecurityLevel.HIGH;
 
-		// Create Lyle and Hal
+		// Creo los sujetos Lyle y Hal
 		sys.createSubject("Lyle", low);
 		sys.createSubject("Hal", high);
 
-		// Create LObj and HObj
+		// Creo los objs LObj y HObj
 		sys.getReferenceMonitor().createNewObject("LObj", low);
 		sys.getReferenceMonitor().createNewObject("HObj", high);
 
-		// Parse the passed txt file until end, while printing the state after
-		// each line
+		// Recorro e imprimo el txt revisando el estado
 		Scanner scan = new Scanner(file2);
 		while (scan.hasNextLine()) {
 			String curLine = scan.nextLine();
@@ -43,30 +42,27 @@ public class SecureSystem {
 		scan.close();
 	}
 
-	// SecureSystem constructor
+	// Constructor secureSystem
 	public SecureSystem(String fileName) throws FileNotFoundException {
 		File file1 = new File(fileName);
 		System.out.println("Reading from file: " + file1);
 		System.out.println();
 	}
 
-	// Constructor for a subject manager
+	// Constructor del subjManager
 	void createSubject(String name, SecurityLevel secLev) {
 		subjectManager.put(name, secLev);
 	}
-
-	// Returns the subject manager
+        
 	public static HashMap<String, SecurityLevel> getSubjectManager() {
 		return subjectManager;
 	}
 
-	// Returns the reference monitor
 	public ReferenceMonitor getReferenceMonitor() {
 		return refMon;
 	}
 
-	// Prints the status of all the objects and subjects after each line of the
-	// txt
+	// Imprimo estado de todos los sujetos/objetos del txt
 	static void printState() {
 		if (instrobj.getInstruction().equals("BAD")) {
 			System.out.println("Bad Instruction");

@@ -1,28 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package obligatorioassi;
 
-/**
- *
- * @author santi
- */
 public class ReferenceMonitor {
     public ReferenceMonitor() {
-		// Initially add a blank Hal and Lyle to the read manager
+		// Se agregan Hal y Lyle al readManager
 		ObjectManager.getReadManager().put("Hal", 0);
 		ObjectManager.getReadManager().put("Lyle", 0);
 	}
 
-	// Create a new object within the object manager
+	// Genero nuevo objeto en el objectManager
 	public void createNewObject(String name, SecurityLevel secLev) {
 		ObjectManager.createNewObject(name, secLev);
 	}
 
-	// Check to see if the passed write instruction is safe based on security
-	// principles. If so, send to object manager for execution
+	// Reviso si la instruccion write es "segura" y envio la ejecucion al objectManager
 	static void writeExecute(InstructionObject instr) {
 		String subj = instr.getSubject();
 		String obj = instr.getObject();
@@ -40,8 +31,7 @@ public class ReferenceMonitor {
 		}
 	}
 
-	// Check to see if the passed read instruction is safe based on security
-	// principles. If so, send to object manager for execution
+	// Reviso si la instruccion write es "segura" y envio la ejecucion al objectManager
 	static void readExecute(InstructionObject instr) {
 		String subj = instr.getSubject();
 		String obj = instr.getObject();
