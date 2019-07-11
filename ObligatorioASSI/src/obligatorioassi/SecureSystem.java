@@ -24,7 +24,7 @@ public class SecureSystem {
 		SecurityLevel low = SecurityLevel.LOW;
 		SecurityLevel high = SecurityLevel.HIGH;
 
-		// Create Lyle and Hal
+		// Create Lyle and Hal 
 		sys.createSubject("Lyle", low);
 		sys.createSubject("Hal", high);
 
