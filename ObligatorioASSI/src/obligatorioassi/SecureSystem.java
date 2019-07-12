@@ -4,22 +4,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
-import obligatorioassi.InstructionObject;
-import obligatorioassi.ObjectManager;
-import obligatorioassi.ReferenceMonitor;
-import obligatorioassi.SecurityLevel;
 
 public class SecureSystem {
 	ReferenceMonitor refMon = new ReferenceMonitor();
 	static InstructionObject instrobj;
-	static HashMap<String, SecurityLevel> subjectManager = new HashMap<String, SecurityLevel>();
-
+	static HashMap<String, SecurityLevel> subjectManager = new HashMap<>();
+        static File input_file;
 	public static void main(String[] args) throws FileNotFoundException {
 
 		// Crea un securitySystem y pasa el txt en el filePath
-		SecureSystem sys = new SecureSystem("C:\\Users\\santi\\OneDrive\\Escritorio\\Santiago\\ORT\\ASSI\\ObligatorioASSI\\pruebaArchivo.txt");
-		File file2 = new File("C:\\Users\\santi\\OneDrive\\Escritorio\\Santiago\\ORT\\ASSI\\ObligatorioASSI\\pruebaArchivo.txt");
-
+		SecureSystem sys = new SecureSystem("C:\\pruebaArchivo.txt");
+		
 		// Crea ambos niveles de seguridaad
 		SecurityLevel low = SecurityLevel.LOW;
 		SecurityLevel high = SecurityLevel.HIGH;
@@ -33,7 +28,7 @@ public class SecureSystem {
 		sys.getReferenceMonitor().createNewObject("HObj", high);
 
 		// Recorro e imprimo el txt revisando el estado
-		Scanner scan = new Scanner(file2);
+		Scanner scan = new Scanner(input_file);
 		while (scan.hasNextLine()) {
 			String curLine = scan.nextLine();
 			instrobj = new InstructionObject(curLine);
@@ -44,8 +39,8 @@ public class SecureSystem {
 
 	// Constructor secureSystem
 	public SecureSystem(String fileName) throws FileNotFoundException {
-		File file1 = new File(fileName);
-		System.out.println("Reading from file: " + file1);
+		input_file = new File(fileName);
+		System.out.println("Leyendo desde: " + input_file);
 		System.out.println();
 	}
 
@@ -65,42 +60,28 @@ public class SecureSystem {
 	// Imprimo estado de todos los sujetos/objetos del txt
 	static void printState() {
 		if (instrobj.getInstruction().equals("BAD")) {
-			System.out.println("Bad Instruction");
-			System.out.println("The current state is: ");
-			System.out.println("   LObj has value: "
-					+ ObjectManager.getValueManager().get("LObj"));
-			System.out.println("   HObj has value: "
-					+ ObjectManager.getValueManager().get("HObj"));
-			System.out.println("   Lyle has recently read: "
-					+ ObjectManager.getReadManager().get("Lyle"));
-			System.out.println("   Hal has recently read: "
-					+ ObjectManager.getReadManager().get("Hal"));
+			System.out.println("Instrucción mal formada");
+			System.out.println("Estado Actual: ");
+			System.out.println("   LObj tiene el valor: " + ObjectManager.getValueManager().get("LObj"));
+			System.out.println("   HObj tiene el valor: " + ObjectManager.getValueManager().get("HObj"));
+			System.out.println("   Lyle ha leído: " + ObjectManager.getReadManager().get("Lyle"));
+			System.out.println("   Hal ha leído: " + ObjectManager.getReadManager().get("Hal"));
 			System.out.println();
 		} else if (instrobj.getInstruction().equals("READ")) {
-			System.out.println(instrobj.getSubject() + " reads "
-					+ instrobj.getObject());
-			System.out.println("The current state is: ");
-			System.out.println("   LObj has value: "
-					+ ObjectManager.getValueManager().get("LObj"));
-			System.out.println("   HObj has value: "
-					+ ObjectManager.getValueManager().get("HObj"));
-			System.out.println("   Lyle has recently read: "
-					+ ObjectManager.getReadManager().get("Lyle"));
-			System.out.println("   Hal has recently read: "
-					+ ObjectManager.getReadManager().get("Hal"));
+			System.out.println(instrobj.getSubject() + " lee el valor" + instrobj.getObject());
+			System.out.println("Estado Actual: ");
+			System.out.println("   LObj tiene el valor: " + ObjectManager.getValueManager().get("LObj"));
+			System.out.println("   HObj tiene el valor: " + ObjectManager.getValueManager().get("HObj"));
+			System.out.println("   Lyle ha leído: " + ObjectManager.getReadManager().get("Lyle"));
+			System.out.println("   Hal ha leído: " + ObjectManager.getReadManager().get("Hal"));
 			System.out.println();
 		} else if (instrobj.getInstruction().equals("WRITE")) {
-			System.out.println(instrobj.getSubject() + " writes value "
-					+ instrobj.getValue() + " to " + instrobj.getObject());
-			System.out.println("The current state is: ");
-			System.out.println("   LObj has value: "
-					+ ObjectManager.getValueManager().get("LObj"));
-			System.out.println("   HObj has value: "
-					+ ObjectManager.getValueManager().get("HObj"));
-			System.out.println("   Lyle has recently read: "
-					+ ObjectManager.getReadManager().get("Lyle"));
-			System.out.println("   Hal has recently read: "
-					+ ObjectManager.getReadManager().get("Hal"));
+			System.out.println(instrobj.getSubject() + " escribe el valor "  + instrobj.getValue() + " a " + instrobj.getObject());
+			System.out.println("Estado Actual: ");
+			System.out.println("   LObj tiene el valor: " + ObjectManager.getValueManager().get("LObj"));
+			System.out.println("   HObj tiene el valor: " + ObjectManager.getValueManager().get("HObj"));
+			System.out.println("   Lyle ha leído: " + ObjectManager.getReadManager().get("Lyle"));
+			System.out.println("   Hal ha leído: " + ObjectManager.getReadManager().get("Hal"));
 			System.out.println();
 		}
 	}
