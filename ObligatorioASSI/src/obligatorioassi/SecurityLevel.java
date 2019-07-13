@@ -1,16 +1,20 @@
 package obligatorioassi;
 
 public class SecurityLevel {
-	public static SecurityLevel HIGH = new SecurityLevel(1);
-	public static SecurityLevel LOW = new SecurityLevel(0);
-        int dominacion;
 
+	int domination;
+	static SecurityLevel HIGH = new SecurityLevel(1);
+	static SecurityLevel LOW = new SecurityLevel(0);
+
+	// Creates a security level
 	public SecurityLevel(int level) {
-		dominacion = level;
+		domination = level;
 	}
 
-	// Retorna el valor de dominacion para saber quien domina
+	// Returns the domination for checking security levels later for who
+	// dominates
 	int getDomination() {
-		return dominacion;
+		return domination;
 	}
+
 }
