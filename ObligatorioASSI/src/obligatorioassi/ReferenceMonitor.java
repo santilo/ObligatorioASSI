@@ -3,51 +3,50 @@ package obligatorioassi;
 
 public class ReferenceMonitor {
     public ReferenceMonitor() {
-		// Se agregan Hal y Lyle al readManager
-		ObjectManager.getReadManager().put("Hal", 0);
-		ObjectManager.getReadManager().put("Lyle", 0);
+        // Se agregan Hal y Lyle al readManager
+        ObjectManager.obtenerLecturas().put("hal", 0);
+        ObjectManager.obtenerLecturas().put("lyle", 0);
 	}
 
 	// Genero nuevo objeto en el objectManager
-	public void createNewObject(String name, SecurityLevel secLev) {
-		ObjectManager.createNewObject(name, secLev);
+	public void AltaObjeto(String name, SecurityLevel secLev) {
+		ObjectManager.AltaObjeto(name.toLowerCase(), secLev);
 	}
 
 	// Reviso si la instruccion write es "segura" y envio la ejecucion al objectManager
-	static void writeExecute(InstructionObject instr) {
-		String subj = instr.getSubject();
-		String obj = instr.getObject();
+	static void Escribir(InstructionObject instruccion) {
+		String subj = instruccion.obtenerSujeto();
+		String obj = instruccion.obtenerObjeto();
 
-		SecurityLevel subjSec = SecureSystem.getSubjectManager().get(subj);
-		int subjSecLevel = subjSec.getDomination();
+		SecurityLevel SujetoSeguridad = SecureSystem.obtenerSujetos().get(subj);
+		int NivelSeguridadSujeto = SujetoSeguridad.obtenerDominancia();
 
-		SecurityLevel objSec = ObjectManager.getObjectManager().get(obj);
-		int objSecLevel = objSec.getDomination();
+		SecurityLevel objetoSeguridad = ObjectManager.obtenerObjetos().get(obj);
+		int NivelSeguridadObjeto = objetoSeguridad.obtenerDominancia();
                 
                 //SI EL SUJETO ES MEJOR O IGUAL QUE EL OBJETO, ENTONCES PUEDE ESCRIBIR.
-                
-		if (subjSecLevel <= objSecLevel) {
-			ObjectManager.writeExecute(instr);
+		if (NivelSeguridadSujeto <= NivelSeguridadObjeto) {
+			ObjectManager.Escribir(instruccion);
 		}
 	}
 
 	// Reviso si la instruccion write es "segura" y envio la ejecucion al objectManager
-	static void readExecute(InstructionObject instr) {
-		String subj = instr.getSubject();
-		String obj = instr.getObject();
+	static void Leer(InstructionObject instruccion) {
+		String sujeto = instruccion.obtenerSujeto();
+		String objeto = instruccion.obtenerObjeto();
 
-		SecurityLevel subjSec = SecureSystem.getSubjectManager().get(subj);
-		int subjSecLevel = subjSec.getDomination();
+		SecurityLevel SujetoSeguridad = SecureSystem.obtenerSujetos().get(sujeto);
+		int NivelSeguridadSujeto = SujetoSeguridad.obtenerDominancia();
 
-		SecurityLevel objSec = ObjectManager.getObjectManager().get(obj);
-		int objSecLevel = objSec.getDomination();
+		SecurityLevel objetoSeguridad = ObjectManager.obtenerObjetos().get(objeto);
+		int NivelSeguridadObjeto = objetoSeguridad.obtenerDominancia();
 
                 //SI EL SUJETO ES MAYOR O IGUAL QUE EL OBJETO, ENTONCES PUEDE LEER.
                 
-		if (subjSecLevel >= objSecLevel) {
-			ObjectManager.readExecute(instr);
+		if (NivelSeguridadSujeto >= NivelSeguridadObjeto) {
+			ObjectManager.Leer(instruccion);
 		} else {
-			ObjectManager.badReadExecute(instr);
+			ObjectManager.InstruccionMal(instruccion);
 		}
 	}
 }

@@ -4,104 +4,94 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
-import obligatorioassi.InstructionObject;
-import obligatorioassi.ObjectManager;
-import obligatorioassi.ReferenceMonitor;
-import obligatorioassi.SecurityLevel;
 
 public class SecureSystem {
 	ReferenceMonitor refMon = new ReferenceMonitor();
 	static InstructionObject instrobj;
-	static HashMap<String, SecurityLevel> subjectManager = new HashMap<String, SecurityLevel>();
+	static HashMap<String, SecurityLevel> sujetos = new HashMap<String, SecurityLevel>();
+        static  File file;
+	
+        public static void main(String[] args) throws FileNotFoundException {
+            // Crea securitySystem 
+            //SecureSystem sys = new SecureSystem("C:\\ASSI\\InstructionList.txt");
+            SecureSystem sys = new SecureSystem("C:\\ASSI\\PruebaArchivo.txt");
 
-	public static void main(String[] args) throws FileNotFoundException {
+            // Crea ambos niveles de seguridaad
+            SecurityLevel low = SecurityLevel.LOW;
+            SecurityLevel high = SecurityLevel.HIGH;
 
-		// Crea un securitySystem y pasa el txt en el filePath
-		SecureSystem sys = new SecureSystem("C:\\Users\\santi\\OneDrive\\Escritorio\\Santiago\\ORT\\ASSI\\ObligatorioASSI\\pruebaArchivo.txt");
-		File file2 = new File("C:\\Users\\santi\\OneDrive\\Escritorio\\Santiago\\ORT\\ASSI\\ObligatorioASSI\\pruebaArchivo.txt");
+            // Creo los sujetos lyle y hal
+            sys.createSubject("lyle", low);
+            sys.createSubject("hal", high);
 
-		// Crea ambos niveles de seguridaad
-		SecurityLevel low = SecurityLevel.LOW;
-		SecurityLevel high = SecurityLevel.HIGH;
+            // Creo los objs lobj y hobj
+            sys.obtenerReferenceMonitor().AltaObjeto("lobj", low);
+            sys.obtenerReferenceMonitor().AltaObjeto("hobj", high);
 
-		// Creo los sujetos Lyle y Hal
-		sys.createSubject("Lyle", low);
-		sys.createSubject("Hal", high);
-
-		// Creo los objs LObj y HObj
-		sys.getReferenceMonitor().createNewObject("LObj", low);
-		sys.getReferenceMonitor().createNewObject("HObj", high);
-
-		// Recorro e imprimo el txt revisando el estado
-		Scanner scan = new Scanner(file2);
-		while (scan.hasNextLine()) {
-			String curLine = scan.nextLine();
-			instrobj = new InstructionObject(curLine);
-			printState();
-		}
-		scan.close();
+            // Recorro e imprimo el txt revisando el estado de cada instruccion
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                String linea = scanner.nextLine();
+                instrobj = new InstructionObject(linea);
+                printState();
+            }
+            scanner.close();
 	}
 
 	// Constructor secureSystem
 	public SecureSystem(String fileName) throws FileNotFoundException {
-		File file1 = new File(fileName);
-		System.out.println("Reading from file: " + file1);
+		file = new File(fileName);
+		System.out.println("Las instrucciones estan siendo leídas desde: " + file);
 		System.out.println();
+  
 	}
 
 	// Constructor del subjManager
 	void createSubject(String name, SecurityLevel secLev) {
-		subjectManager.put(name, secLev);
+		sujetos.put(name.toLowerCase(), secLev);
 	}
         
-	public static HashMap<String, SecurityLevel> getSubjectManager() {
-		return subjectManager;
+	public static HashMap<String, SecurityLevel> obtenerSujetos() {
+		return sujetos;
 	}
 
-	public ReferenceMonitor getReferenceMonitor() {
+	public ReferenceMonitor obtenerReferenceMonitor() {
 		return refMon;
 	}
-
-	// Imprimo estado de todos los sujetos/objetos del txt
+     
+        // Imprimo estado de todos los sujetos/objetos del txt
 	static void printState() {
-		if (instrobj.getInstruction().equals("BAD")) {
-			System.out.println("Bad Instruction");
-			System.out.println("The current state is: ");
-			System.out.println("   LObj has value: "
-					+ ObjectManager.getValueManager().get("LObj"));
-			System.out.println("   HObj has value: "
-					+ ObjectManager.getValueManager().get("HObj"));
-			System.out.println("   Lyle has recently read: "
-					+ ObjectManager.getReadManager().get("Lyle"));
-			System.out.println("   Hal has recently read: "
-					+ ObjectManager.getReadManager().get("Hal"));
-			System.out.println();
-		} else if (instrobj.getInstruction().equals("READ")) {
-			System.out.println(instrobj.getSubject() + " reads "
-					+ instrobj.getObject());
-			System.out.println("The current state is: ");
-			System.out.println("   LObj has value: "
-					+ ObjectManager.getValueManager().get("LObj"));
-			System.out.println("   HObj has value: "
-					+ ObjectManager.getValueManager().get("HObj"));
-			System.out.println("   Lyle has recently read: "
-					+ ObjectManager.getReadManager().get("Lyle"));
-			System.out.println("   Hal has recently read: "
-					+ ObjectManager.getReadManager().get("Hal"));
-			System.out.println();
-		} else if (instrobj.getInstruction().equals("WRITE")) {
-			System.out.println(instrobj.getSubject() + " writes value "
-					+ instrobj.getValue() + " to " + instrobj.getObject());
-			System.out.println("The current state is: ");
-			System.out.println("   LObj has value: "
-					+ ObjectManager.getValueManager().get("LObj"));
-			System.out.println("   HObj has value: "
-					+ ObjectManager.getValueManager().get("HObj"));
-			System.out.println("   Lyle has recently read: "
-					+ ObjectManager.getReadManager().get("Lyle"));
-			System.out.println("   Hal has recently read: "
-					+ ObjectManager.getReadManager().get("Hal"));
-			System.out.println();
-		}
+            switch(instrobj.obtenerInstruccion()) {
+            case "BAD":
+                System.out.println("Instrucción mal formada");
+                System.out.println("El estado actual del sistema es: ");
+                System.out.println("   LObj tiene el valor: " + ObjectManager.obtenerValores().get("lobj"));
+                System.out.println("   HObj tiene el valor " + ObjectManager.obtenerValores().get("hobj"));
+                System.out.println("   Lyle recientemente leyo: " + ObjectManager.obtenerLecturas().get("lyle"));
+                System.out.println("   Hal recientemente leyo: " + ObjectManager.obtenerLecturas().get("hal"));
+                System.out.println();
+                break;
+           
+            case "READ":
+                System.out.println(instrobj.obtenerSujeto() + " lee " + instrobj.obtenerObjeto());
+                System.out.println("El estado actual del sistema es: ");
+                System.out.println("   LObj tiene el valor: " + ObjectManager.obtenerValores().get("lobj"));
+                System.out.println("   HObj tiene el valor " + ObjectManager.obtenerValores().get("hobj"));
+                System.out.println("   Lyle recientemente leyo: " + ObjectManager.obtenerLecturas().get("lyle"));
+                System.out.println("   Hal recientemente leyo: " + ObjectManager.obtenerLecturas().get("hal"));
+                System.out.println();
+                break;
+
+            case "WRITE":
+                System.out.println(instrobj.obtenerSujeto() + " escribe el valor " + instrobj.obtenerValor() + " a " + instrobj.obtenerObjeto());
+                System.out.println("El estado actual del sistema es: ");
+                System.out.println("   LObj tiene el valor: " + ObjectManager.obtenerValores().get("lobj"));
+                System.out.println("   HObj tiene el valor " + ObjectManager.obtenerValores().get("hobj"));
+                System.out.println("   Lyle recientemente leyo: " + ObjectManager.obtenerLecturas().get("lyle"));
+                System.out.println("   Hal recientemente leyo: " + ObjectManager.obtenerLecturas().get("hal"));
+                System.out.println();
+                break;
+          }
 	}
+	
 }
