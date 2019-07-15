@@ -13,8 +13,7 @@ public class SecureSystem {
 	
         public static void main(String[] args) throws FileNotFoundException {
             // Crea securitySystem 
-            //SecureSystem sys = new SecureSystem("C:\\ASSI\\InstructionList.txt");
-            SecureSystem sys = new SecureSystem("C:\\ASSI\\PruebaArchivo.txt");
+            SecureSystem sys = new SecureSystem(args[0]);
 
             // Crea ambos niveles de seguridaad
             SecurityLevel low = SecurityLevel.LOW;
