@@ -6,9 +6,9 @@ public class InstructionObject {
 	private String objeto;
 	private int valor;
 
-	public InstructionObject(String instr) {
+	public InstructionObject(String pinstruccion) {
             this.instruccion	= " ";
-            String[] instruccion = instr.split(" ");
+            String[] instruccion = pinstruccion.split(" ");
             // Reviso si la instruccion es del largo apropiado acorde a la operacion a ejecutar
             if ((instruccion.length != 4 && instruccion[0].toUpperCase().equals("WRITE")) || (instruccion.length != 3 && instruccion[0].toUpperCase().equals("READ"))) {
                 this.instruccion = "BAD";
