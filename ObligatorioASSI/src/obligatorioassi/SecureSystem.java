@@ -42,7 +42,6 @@ public class SecureSystem {
 		file = new File(fileName);
 		System.out.println("Las instrucciones estan siendo leídas desde: " + file);
 		System.out.println();
-  
 	}
 
 	// Constructor del subjManager
@@ -91,6 +90,5 @@ public class SecureSystem {
                 System.out.println();
                 break;
           }
-	}
-	
+	}	
 }

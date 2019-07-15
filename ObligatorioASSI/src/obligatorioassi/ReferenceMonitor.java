@@ -18,14 +18,14 @@ public class ReferenceMonitor {
 		String subj = instruccion.obtenerSujeto();
 		String obj = instruccion.obtenerObjeto();
 
-		SecurityLevel SujetoSeguridad = SecureSystem.obtenerSujetos().get(subj);
-		int NivelSeguridadSujeto = SujetoSeguridad.obtenerDominancia();
+		SecurityLevel sujetoSeguridad = SecureSystem.obtenerSujetos().get(subj);
+		int nivelSeguridadSujeto = sujetoSeguridad.obtenerDominancia();
 
 		SecurityLevel objetoSeguridad = ObjectManager.obtenerObjetos().get(obj);
-		int NivelSeguridadObjeto = objetoSeguridad.obtenerDominancia();
+		int nivelSeguridadObjeto = objetoSeguridad.obtenerDominancia();
                 
                 //SI EL SUJETO ES MEJOR O IGUAL QUE EL OBJETO, ENTONCES PUEDE ESCRIBIR.
-		if (NivelSeguridadSujeto <= NivelSeguridadObjeto) {
+		if (nivelSeguridadSujeto <= nivelSeguridadObjeto) {
 			ObjectManager.Escribir(instruccion);
 		}
 	}
@@ -36,14 +36,14 @@ public class ReferenceMonitor {
 		String objeto = instruccion.obtenerObjeto();
 
 		SecurityLevel SujetoSeguridad = SecureSystem.obtenerSujetos().get(sujeto);
-		int NivelSeguridadSujeto = SujetoSeguridad.obtenerDominancia();
+		int nivelSeguridadSujeto = SujetoSeguridad.obtenerDominancia();
 
 		SecurityLevel objetoSeguridad = ObjectManager.obtenerObjetos().get(objeto);
-		int NivelSeguridadObjeto = objetoSeguridad.obtenerDominancia();
+		int nivelSeguridadObjeto = objetoSeguridad.obtenerDominancia();
 
                 //SI EL SUJETO ES MAYOR O IGUAL QUE EL OBJETO, ENTONCES PUEDE LEER.
                 
-		if (NivelSeguridadSujeto >= NivelSeguridadObjeto) {
+		if (nivelSeguridadSujeto >= nivelSeguridadObjeto) {
 			ObjectManager.Leer(instruccion);
 		} else {
 			ObjectManager.InstruccionMal(instruccion);
