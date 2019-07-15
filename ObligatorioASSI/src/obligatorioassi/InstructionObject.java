@@ -36,7 +36,7 @@ public class InstructionObject {
 			ReferenceMonitor.Escribir(obtenerInstructionObject());
 		}
 	}
-        
+         
         
 	// Reviso si mi valor es un numero entero o no
 	public static boolean esNumerico(String s) {
