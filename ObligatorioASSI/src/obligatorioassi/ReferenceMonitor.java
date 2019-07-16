@@ -9,10 +9,10 @@ public class ReferenceMonitor {
 
     public ReferenceMonitor() {
         // Se agregan Hal y Lyle al readManager
-        ObjectManager.obtenerLecturas().put("hal", 0);
-        ObjectManager.obtenerLecturas().put("lyle", 0);
-        ejecuciones.put("hal", "");
-        ejecuciones.put("lyle", "");
+        ObjectManager.obtenerLecturas().put("HAL", 0);
+        ObjectManager.obtenerLecturas().put("LYLE", 0);
+        ejecuciones.put("HAL", "temp");
+        ejecuciones.put("LYLE", "temp");
     }
 
     public static String obtenerEjecucion() {
@@ -25,7 +25,7 @@ public class ReferenceMonitor {
 
     // Genero nuevo objeto en el objectManager
     static public void AltaObjeto(String name, SecurityLevel secLev) {
-        ObjectManager.AltaObjeto(name.toLowerCase(), secLev);
+        ObjectManager.AltaObjeto(name ,secLev);
     }
 
     // Reviso si la instruccion write es "segura" y envio la ejecucion al objectManager
@@ -91,10 +91,10 @@ public class ReferenceMonitor {
 
     // Execute the RUN call.
     static void Ejecutar(InstructionObject instruccion) {
-        int tmp = ObjectManager.obtenerLecturas().get(instruccion.obtenerObjeto());
+        int tmp = ObjectManager.obtenerLecturas().get(instruccion.obtenerSujeto());
         String ejecucion = ejecuciones.get(instruccion.obtenerSujeto());
         //primera ejecucion
-        if (ejecucion.equals("")) {
+        if (ejecucion.equals("temp")) {
             if (tmp != 0) {
                 ejecucion = "1";
                 ejecuciones.put(instruccion.obtenerSujeto(), ejecucion);

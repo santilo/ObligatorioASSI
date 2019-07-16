@@ -7,8 +7,8 @@ public class CovertChannel {
 
 	static long numOfBits = 0;
 	static boolean verbose;
+        static FileOutputStream logger;    
 
-	// static String log = "";
 
 	public static void main(String[] args) throws IOException {
 		File file2;
@@ -16,13 +16,17 @@ public class CovertChannel {
 			System.out.println("VERBOSE");
 			file2 = new File(args[1]);
 			verbose = true;
+                        String logName = "log.txt";
+                        logger = new FileOutputStream(logName);
 		} else {
 			file2 = new File(args[0]);
 			verbose = false;
 		}
-
-		SecureSystem sys = new SecureSystem(args[0]);
-
+                SecureSystem sys = new SecureSystem(args[0]);		                
+   
+                
+               
+                
 		// Create low and high Security Levels
 		SecurityLevel low = SecurityLevel.LOW;
 		SecurityLevel high = SecurityLevel.HIGH;
@@ -35,10 +39,10 @@ public class CovertChannel {
 		// each line
 		Scanner scan = new Scanner(file2);
 		String fileName = file2.getName() + ".out";
-		String logName = "log.txt";
+		
 		byte[] newLine = System.getProperty("line.separator").getBytes();
 		FileOutputStream fos = new FileOutputStream(fileName);
-		FileOutputStream logger = new FileOutputStream(logName);
+		
 		final long startTime = System.currentTimeMillis();
 
 		// While file has next line
@@ -113,7 +117,10 @@ public class CovertChannel {
 		System.out.println("Bandwidth: " + bandwidth + " bits/ms");
 		scan.close();
 		fos.close();
-		logger.close();
+		if (verbose){
+                    logger.close();
+                }
+                
 	}
 
 }
