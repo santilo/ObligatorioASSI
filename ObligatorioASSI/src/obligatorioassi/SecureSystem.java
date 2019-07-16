@@ -9,88 +9,117 @@ public class SecureSystem {
 	ReferenceMonitor refMon = new ReferenceMonitor();
 	static InstructionObject instrobj;
 	static HashMap<String, SecurityLevel> sujetos = new HashMap<String, SecurityLevel>();
-        static  File file;
-	
-        public static void main(String[] args) throws FileNotFoundException {
-            // Crea securitySystem 
-            SecureSystem sys = new SecureSystem(args[0]);
 
-            // Crea ambos niveles de seguridaad
-            SecurityLevel low = SecurityLevel.LOW;
-            SecurityLevel high = SecurityLevel.HIGH;
-
-            // Creo los sujetos lyle y hal
-            sys.createSubject("lyle", low);
-            sys.createSubject("hal", high);
-
-            // Creo los objs lobj y hobj
-            sys.obtenerReferenceMonitor().AltaObjeto("lobj", low);
-            sys.obtenerReferenceMonitor().AltaObjeto("hobj", high);
-
-            // Recorro e imprimo el txt revisando el estado de cada instruccion
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                String linea = scanner.nextLine();
-                instrobj = new InstructionObject(linea);
-                printState();
-            }
-            scanner.close();
+	static void passInstructions(String[] instructions) {
+		// Parse the passed txt file until end, while printing the state after
+		// each line
+		for (int i = 0; i < instructions.length; i++) {
+			// System.out.println("Passing instruction: " + instructions[i]);
+			instrobj = new InstructionObject(instructions[i]);
+			// printState();
+		}
 	}
 
-	// Constructor secureSystem
+	// SecureSystem constructor
 	public SecureSystem(String fileName) throws FileNotFoundException {
-		file = new File(fileName);
-		System.out.println("Las instrucciones estan siendo leídas desde: " + file);
-		System.out.println();
-  
+
 	}
 
-	// Constructor del subjManager
+	// Constructor for a subject manager
 	void createSubject(String name, SecurityLevel secLev) {
-		sujetos.put(name.toLowerCase(), secLev);
+		sujetos.put(name, secLev);
 	}
-        
+
+	// Returns the subject manager
 	public static HashMap<String, SecurityLevel> obtenerSujetos() {
 		return sujetos;
 	}
 
+	// Returns the reference monitor
 	public ReferenceMonitor obtenerReferenceMonitor() {
 		return refMon;
 	}
-     
-        // Imprimo estado de todos los sujetos/objetos del txt
-	static void printState() {
-            switch(instrobj.obtenerInstruccion()) {
-            case "BAD":
-                System.out.println("Instrucción mal formada");
-                System.out.println("El estado actual del sistema es: ");
-                System.out.println("   LObj tiene el valor: " + ObjectManager.obtenerValores().get("lobj"));
-                System.out.println("   HObj tiene el valor " + ObjectManager.obtenerValores().get("hobj"));
-                System.out.println("   Lyle recientemente leyo: " + ObjectManager.obtenerLecturas().get("lyle"));
-                System.out.println("   Hal recientemente leyo: " + ObjectManager.obtenerLecturas().get("hal"));
-                System.out.println();
-                break;
-           
-            case "READ":
-                System.out.println(instrobj.obtenerSujeto() + " lee " + instrobj.obtenerObjeto());
-                System.out.println("El estado actual del sistema es: ");
-                System.out.println("   LObj tiene el valor: " + ObjectManager.obtenerValores().get("lobj"));
-                System.out.println("   HObj tiene el valor " + ObjectManager.obtenerValores().get("hobj"));
-                System.out.println("   Lyle recientemente leyo: " + ObjectManager.obtenerLecturas().get("lyle"));
-                System.out.println("   Hal recientemente leyo: " + ObjectManager.obtenerLecturas().get("hal"));
-                System.out.println();
-                break;
 
-            case "WRITE":
-                System.out.println(instrobj.obtenerSujeto() + " escribe el valor " + instrobj.obtenerValor() + " a " + instrobj.obtenerObjeto());
-                System.out.println("El estado actual del sistema es: ");
-                System.out.println("   LObj tiene el valor: " + ObjectManager.obtenerValores().get("lobj"));
-                System.out.println("   HObj tiene el valor " + ObjectManager.obtenerValores().get("hobj"));
-                System.out.println("   Lyle recientemente leyo: " + ObjectManager.obtenerLecturas().get("lyle"));
-                System.out.println("   Hal recientemente leyo: " + ObjectManager.obtenerLecturas().get("hal"));
-                System.out.println();
-                break;
-          }
+	// Prints the status of all the objects and subjects after each line of the
+	// txt
+	static void printState() {
+		if (instrobj.obtenerInstruccion().equals("BAD")) {
+			System.out.println("Instrucción mal formada");
+			System.out.println("El estado actual del sistema es: ");
+			System.out.println("   LObj tiene el valor: "
+					+ ObjectManager.obtenerValores().get("LObj"));
+			System.out.println("   HObj tiene el valor: "
+					+ ObjectManager.obtenerValores().get("HObj"));
+			System.out.println("   Lyle recientemente leyo: "
+					+ ObjectManager.obtenerLecturas().get("Lyle"));
+			System.out.println("   Hal recientemente leyo: "
+					+ ObjectManager.obtenerLecturas().get("Hal"));
+			System.out.println();
+		} else if (instrobj.obtenerInstruccion().equals("READ")) {
+			System.out.println(instrobj.obtenerSujeto()+ " reads "
+					+ instrobj.obtenerSujeto());
+			System.out.println("El estado actual del sistema es: ");
+			System.out.println("   LObj tiene el valor: "
+					+ ObjectManager.obtenerValores().get("LObj"));
+			System.out.println("   HObj tiene el valor: "
+					+ ObjectManager.obtenerValores().get("HObj"));
+			System.out.println("   Lyle recientemente leyo: "
+					+ ObjectManager.obtenerLecturas().get("Lyle"));
+			System.out.println("   Hal recientemente leyo: "
+					+ ObjectManager.obtenerLecturas().get("Hal"));
+			System.out.println();
+		} else if (instrobj.obtenerInstruccion().equals("WRITE")) {
+			System.out.println(instrobj.obtenerSujeto()+ " writes value "
+					+ instrobj.obtenerValor()+ " to " + instrobj.obtenerObjeto());
+			System.out.println("El estado actual del sistema es: ");
+			System.out.println("   LObj tiene el valor: "
+					+ ObjectManager.obtenerValores().get("LObj"));
+			System.out.println("   HObj tiene el valor: "
+					+ ObjectManager.obtenerValores().get("HObj"));
+			System.out.println("   Lyle recientemente leyo: "
+					+ ObjectManager.obtenerLecturas().get("Lyle"));
+			System.out.println("   Hal recientemente leyo: "
+					+ ObjectManager.obtenerLecturas().get("Hal"));
+			System.out.println();
+		} else if (instrobj.obtenerInstruccion().equals("CREATE")) {
+			System.out.println(instrobj.obtenerSujeto()+ " crea objeto "
+					+ instrobj.obtenerObjeto());
+			System.out.println("El estado actual del sistema es: ");
+			System.out.println("   LObj tiene el valor: "
+					+ ObjectManager.obtenerValores().get("LObj"));
+			System.out.println("   HObj tiene el valor: "
+					+ ObjectManager.obtenerValores().get("HObj"));
+			System.out.println("   Lyle recientemente leyo: "
+					+ ObjectManager.obtenerLecturas().get("Lyle"));
+			System.out.println("   Hal recientemente leyo: "
+					+ ObjectManager.obtenerLecturas().get("Hal"));
+			System.out.println();
+			System.out.println("The current ObjectManager is: ");
+			for (String name : ObjectManager.obtenerObjetos().keySet()) {
+				int value = ObjectManager.obtenerObjetos().get(name)
+						.obtenerDominancia();
+				System.out.println(name + " " + value);
+			}
+		} else if (instrobj.obtenerInstruccion().equals("DESTROY")) {
+			System.out.println(instrobj.obtenerSujeto()+ " destruye objeto "
+					+ instrobj.obtenerObjeto());
+			System.out.println("El estado actual del sistema es: ");
+			System.out.println("   LObj tiene el valor: "
+					+ ObjectManager.obtenerValores().get("LObj"));
+			System.out.println("   HObj tiene el valor: "
+					+ ObjectManager.obtenerValores().get("HObj"));
+			System.out.println("   Lyle recientemente leyo: "
+					+ ObjectManager.obtenerLecturas().get("Lyle"));
+			System.out.println("   Hal recientemente leyo: "
+					+ ObjectManager.obtenerLecturas().get("Hal"));
+			System.out.println();
+			System.out.println("El manejador de objectos actual es: ");
+			for (String name : ObjectManager.obtenerObjetos().keySet()) {
+				int value = ObjectManager.obtenerObjetos().get(name)
+						.obtenerDominancia();
+				System.out.println(name + " " + value);
+			}
+		}
+		System.out.println();
 	}
-	
 }
