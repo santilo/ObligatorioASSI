@@ -9,16 +9,15 @@ public class InstructionObject {
 	public InstructionObject(String instr) {
             this.instruccion	= " ";
             String[] linea = instr.split(" ");
-            linea[1] = linea[1].toLowerCase();
-            linea[2] = linea[2].toLowerCase();
+         
             //si llega instruccion de Run, creo una nueva instancia de InstrucionObject
              if (linea[0].toUpperCase().equals("RUN")) {
                 this.instruccion = "RUN";
-                this.sujeto = linea[1];
+                this.sujeto = linea[1].toLowerCase();
                 ReferenceMonitor.Ejecutar(obtenerInstructionObject());
            
             //Reviso si en la primera posicion de la instruccion llega un comando valido
-            } else if (!linea[0].toUpperCase().equals("READ") && !linea[0].toUpperCase().equals("WRITE")&& linea[0].toUpperCase().equals("CREATE") && !linea[0].toUpperCase().equals("DESTROY") && !linea[0].toUpperCase().equals("RUN")) {
+            } else if (!linea[0].toUpperCase().equals("READ") && !linea[0].toUpperCase().equals("WRITE")&& !linea[0].toUpperCase().equals("CREATE") && !linea[0].toUpperCase().equals("DESTROY") && !linea[0].toUpperCase().equals("RUN")) {
 		this.instruccion = "BAD";
            
             // Reviso si la instruccion es del largo apropiado acorde a la operacion a ejecutar
@@ -27,7 +26,7 @@ public class InstructionObject {
                 this.instruccion = "BAD";
               
             // Reviso si el sujeto y objeto existen
-            } else if (!SecureSystem.obtenerSujetos().containsKey(linea[1]) ) {
+            } else if (!SecureSystem.obtenerSujetos().containsKey(linea[1].toLowerCase()) ) {
                 this.instruccion = "BAD";
                 
                 //Si voy a escribir, el valor tiene que ser numerico
@@ -35,11 +34,11 @@ public class InstructionObject {
                 this.instruccion = "BAD";
              
             //tiene que existir el objeto a eliminar    
-            } else if (linea[0].toUpperCase().equals("DESTROY") && !ObjectManager.obtenerObjetos().containsKey(linea[2])) {
+            } else if (linea[0].toUpperCase().equals("DESTROY") && !ObjectManager.obtenerObjetos().containsKey(linea[2].toLowerCase())) {
                    this.instruccion = "BAD";
       
             //si ya existe el objeto a crear esta mal
-            } else if (linea[0].toUpperCase().equals("CREATE") && ObjectManager.obtenerObjetos().containsKey(linea[2])) {
+            } else if (linea[0].toUpperCase().equals("CREATE") && ObjectManager.obtenerObjetos().containsKey(linea[2].toLowerCase())) {
                 this.instruccion = "BAD";
             }
              
@@ -47,26 +46,27 @@ public class InstructionObject {
                switch(linea[0].toUpperCase()) {
                     case "READ":
                         this.instruccion = "READ";
-                        this.sujeto = linea[1];
-                        this.objeto = linea[2];
+                        this.sujeto = linea[1].toLowerCase();
+                        this.objeto = linea[2].toLowerCase();
                         ReferenceMonitor.Leer(obtenerInstructionObject());
                         break;
                     case "WRITE":
                         this.instruccion = "WRITE";
-                        this.sujeto = linea[1];
-                        this.objeto = linea[2];
+                        this.sujeto = linea[1].toLowerCase();
+                        this.objeto = linea[2].toLowerCase();
                         this.valor = Integer.parseInt(linea[3]);
                         ReferenceMonitor.Escribir(obtenerInstructionObject());
-                    break;
+                        break;
                     case "CREATE":
                         this.instruccion = "CREATE";
-                        this.sujeto = linea[1];
-                        this.objeto = linea[2];
+                        this.sujeto = linea[1].toLowerCase();
+                        this.objeto = linea[2].toLowerCase();
                         ReferenceMonitor.Crear(obtenerInstructionObject());
+                        break;
                     case "DESTROY":
                         this.instruccion = "DESTROY";
-                        this.sujeto = linea[1];
-                        this.objeto = linea[2];
+                        this.sujeto = linea[1].toLowerCase();
+                        this.objeto = linea[2].toLowerCase();
                         ReferenceMonitor.Destruir(obtenerInstructionObject());  
                         break;
                 }

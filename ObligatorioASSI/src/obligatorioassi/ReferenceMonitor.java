@@ -91,19 +91,17 @@ public class ReferenceMonitor {
 
     // Execute the RUN call.
     static void Ejecutar(InstructionObject instruccion) {
-        int tmp = ObjectManager.obtenerLecturas().get(instruccion.obtenerSujeto());
+        int v_temporal = ObjectManager.obtenerLecturas().get(instruccion.obtenerSujeto());
         String ejecucion = ejecuciones.get(instruccion.obtenerSujeto());
         //primera ejecucion
         if (ejecucion.equals("temp")) {
-            if (tmp != 0) {
-                ejecucion = "1";
-                ejecuciones.put(instruccion.obtenerSujeto(), ejecucion);
+            if (v_temporal != 0) {
+                ejecuciones.put(instruccion.obtenerSujeto(), "1");
             } else {
-                ejecucion = "0";
-                ejecuciones.put(instruccion.obtenerSujeto(), ejecucion);
+                ejecuciones.put(instruccion.obtenerSujeto(), "0");
             }
         } else if (ejecucion.length() < 8) {
-            if (tmp != 0) {
+            if (v_temporal != 0) {
                 ejecucion = ejecucion.concat("1");
                 ejecuciones.put(instruccion.obtenerSujeto(), ejecucion);
             } else {
