@@ -20,23 +20,21 @@ public class ObjectManager {
 	}
          //Crea un nuevo objeto a traves del object manager
 	static void AltaObjeto(String nombre, SecurityLevel secLev) {
-		objetos.put(nombre , secLev);
-		valores.put(nombre , 0);
+            objetos.put(nombre , secLev);
+            valores.put(nombre , 0);
 	}
         //Cuando el referenceMonitor valida la instruccion...
 	static void Escribir(InstructionObject instruccion) {
-		int val = instruccion.obtenerValor();
-		String objeto = instruccion.obtenerObjeto();
-
-		valores.put(objeto, val);
+            int val = instruccion.obtenerValor();
+            String objeto = instruccion.obtenerObjeto();
+            valores.put(objeto, val);
 	}
         
         //Cuando el referenceMonitor valida la instruccion...
 	static void Leer(InstructionObject instruccion) {
-		String sujeto = instruccion.obtenerSujeto() ;
-		String objeto = instruccion.obtenerObjeto() ;
-
-		lecturas.put(sujeto, valores.get(objeto));
+            String sujeto = instruccion.obtenerSujeto() ;
+            String objeto = instruccion.obtenerObjeto() ;
+            lecturas.put(sujeto, valores.get(objeto));
 
 	}
 
@@ -48,9 +46,8 @@ public class ObjectManager {
            
 	//Si la instruccion es invalida, fija lo ultimo leido como 0
 	static void InstruccionMal(InstructionObject instr) {
-		String sujeto = instr.obtenerSujeto() ;
-
-		lecturas.put(sujeto, 0);
+            String sujeto = instr.obtenerSujeto() ;
+            lecturas.put(sujeto, 0);
 
 	}
 }
