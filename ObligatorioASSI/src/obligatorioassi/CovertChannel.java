@@ -12,15 +12,18 @@ public class CovertChannel {
 
 	public static void main(String[] args) throws IOException {
 		File file2;
-		if (args[0].equals("v")) {
-			System.out.println("Genero Log");
-			file2 = new File(args[1]);
-			generoLog = true;
-                        String nombreLog = "log.txt";
-                        logger = new FileOutputStream(nombreLog);
-		} else {
-			file2 = new File(args[0]);
-			generoLog = false;
+		if (args[0].equals("v")) 
+                {
+                    System.out.println("Genero Log");
+                    file2 = new File(args[1]);
+                    generoLog = true;
+                    String nombreLog = "log.txt";
+                    logger = new FileOutputStream(nombreLog);
+		} 
+                else 
+                {
+                    file2 = new File(args[0]);
+                    generoLog = false;
 		}
                 SecureSystem sys = new SecureSystem(args[0]);        
 
@@ -29,8 +32,8 @@ public class CovertChannel {
 		SecurityLevel high = SecurityLevel.HIGH;
 
 		//Creo LYLE y HAL
-		sys.createSubject("lyle", low);
-		sys.createSubject("hal", high);
+		sys.crearSujeto("lyle", low);
+		sys.crearSujeto("hal", high);
 
                 // Defino el nombre del archivo que voy a crear como salida
 		Scanner scan = new Scanner(file2);
@@ -41,7 +44,7 @@ public class CovertChannel {
 		
 		final long tiempoInicio = System.currentTimeMillis();
 
-		// While file has next line
+		// Mientras archivo tenga lineas
 		while (scan.hasNextLine()) {
 			String lineaActual = scan.nextLine();
 			byte[] buf = lineaActual.getBytes();
@@ -81,7 +84,7 @@ public class CovertChannel {
                                                 logger.write(resultadoLog);
                                                 logger.write(nuevaLinea);
                                             }
-                                            SecureSystem.passInstructions(instr);
+                                            SecureSystem.procesarIntruccion(instr);
 					} 
                                         else 
                                         {
@@ -99,7 +102,7 @@ public class CovertChannel {
                                                 logger.write(resultadoLog);
                                                 logger.write(nuevaLinea);
                                             }
-                                            SecureSystem.passInstructions(instr);
+                                            SecureSystem.procesarIntruccion(instr);
 					}
 				}
                                 // Escribo en el archivo de salida
