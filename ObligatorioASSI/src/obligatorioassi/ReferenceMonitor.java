@@ -9,10 +9,10 @@ public class ReferenceMonitor {
 
     public ReferenceMonitor() {
         // Se agregan Hal y Lyle al readManager
-        ObjectManager.obtenerLecturas().put("HAL", 0);
-        ObjectManager.obtenerLecturas().put("LYLE", 0);
-        ejecuciones.put("HAL", "temp");
-        ejecuciones.put("LYLE", "temp");
+        ObjectManager.obtenerLecturas().put("hal", 0);
+        ObjectManager.obtenerLecturas().put("lyle", 0);
+        ejecuciones.put("hal", "temp");
+        ejecuciones.put("lyle", "temp");
     }
 
     public static String obtenerEjecucion() {

@@ -6,61 +6,56 @@ import java.util.*;
 public class CovertChannel {
 
 	static long numOfBits = 0;
-	static boolean verbose;
+	static boolean generoLog;
         static FileOutputStream logger;    
 
 
 	public static void main(String[] args) throws IOException {
 		File file2;
 		if (args[0].equals("v")) {
-			System.out.println("VERBOSE");
+			System.out.println("Genero Log");
 			file2 = new File(args[1]);
-			verbose = true;
-                        String logName = "log.txt";
-                        logger = new FileOutputStream(logName);
+			generoLog = true;
+                        String nombreLog = "log.txt";
+                        logger = new FileOutputStream(nombreLog);
 		} else {
 			file2 = new File(args[0]);
-			verbose = false;
+			generoLog = false;
 		}
-                SecureSystem sys = new SecureSystem(args[0]);		                
-   
-                
-               
-                
-		// Create low and high Security Levels
+                SecureSystem sys = new SecureSystem(args[0]);        
+
+		//Creo LOW and HIGH niveles de seguridad
 		SecurityLevel low = SecurityLevel.LOW;
 		SecurityLevel high = SecurityLevel.HIGH;
 
-		// Create Lyle and Hal
-		sys.createSubject("LYLE", low);
-		sys.createSubject("HAL", high);
+		//Creo LYLE y HAL
+		sys.createSubject("lyle", low);
+		sys.createSubject("hal", high);
 
-		// Parse the passed txt file until end, while printing the state after
-		// each line
+                // Defino el nombre del archivo que voy a crear como salida
 		Scanner scan = new Scanner(file2);
-		String fileName = file2.getName() + ".out";
+		String nombreArchivo = file2.getName() + ".out";
 		
-		byte[] newLine = System.getProperty("line.separator").getBytes();
-		FileOutputStream fos = new FileOutputStream(fileName);
+		byte[] nuevaLinea = System.getProperty("line.separator").getBytes();
+		FileOutputStream fos = new FileOutputStream(nombreArchivo);
 		
-		final long startTime = System.currentTimeMillis();
+		final long tiempoInicio = System.currentTimeMillis();
 
 		// While file has next line
 		while (scan.hasNextLine()) {
-			String curLine = scan.nextLine();
-			byte[] buf = curLine.getBytes();
+			String lineaActual = scan.nextLine();
+			byte[] buf = lineaActual.getBytes();
 
 			ByteArrayInputStream input = new ByteArrayInputStream(buf);
-			int numOfBytes = input.available();
+			int numeroDeBytes = input.available();
 
-			// While there are still bytes in the file to be parsed
-			while (numOfBytes > 0) {
+                        //Mientras tengamos bytes en el archivo
+			while (numeroDeBytes > 0) {
 				int inputByte = input.read();
 				String inputBit = Integer.toBinaryString(inputByte);
 				int inputLength = inputBit.length();
 				numOfBits += 8;
-
-				// Make all bytes length 8 by appending any needed 0's
+                                // Me fijo que el largo de los bytes no sea distinto de 8
 				if (inputLength != 8) {
 					while (inputLength != 8) {
 						String zero = "0";
@@ -69,55 +64,65 @@ public class CovertChannel {
 					}
 				}
 
-				// Based on bit being 0 or 1, run appropriate instructions
+				// Recorro los bits y me fijo si es 0 o 1, dependiendo de cual sea, según que ejecuto
 				for (int i = 0; i < inputLength; i++) {
-					if (inputBit.charAt(i) == '0') {
-						String[] instr = { "CREATE HAL OBJ", "CREATE LYLE OBJ",
-								"WRITE LYLE OBJ 1", "READ LYLE OBJ",
-								"DESTROY LYLE OBJ", "RUN LYLE" };
-						// If verbose flag is on, write to log
-						if (verbose) {
-							String log = Arrays.toString(instr);
-							byte[] logResult = log.getBytes();
-							logger.write(logResult);
-							logger.write(newLine);
-						}
-						SecureSystem.passInstructions(instr);
-					} else {
-						String[] instr = { "CREATE LYLE OBJ",
-								"WRITE LYLE OBJ 1", "READ LYLE OBJ",
-								"DESTROY LYLE OBJ", "RUN LYLE" };
-						// If verbose flag is on, write to log
-						if (verbose) {
-							String log = Arrays.toString(instr);
-							byte[] logResult = log.getBytes();
-							logger.write(logResult);
-							logger.write(newLine);
-						}
-						SecureSystem.passInstructions(instr);
+					if (inputBit.charAt(i) == '0') 
+                                        {
+                                            String[] instr = 
+                                            { "CREATE HAL OBJ", "CREATE LYLE OBJ",
+                                                "WRITE LYLE OBJ 1", "READ LYLE OBJ",
+                                                "DESTROY LYLE OBJ", "RUN LYLE" 
+                                            };
+                                            //Si generoLog está en true, escribo en el log
+                                            if (generoLog) 
+                                            {
+                                                String log = Arrays.toString(instr);
+                                                byte[] resultadoLog = log.getBytes();
+                                                logger.write(resultadoLog);
+                                                logger.write(nuevaLinea);
+                                            }
+                                            SecureSystem.passInstructions(instr);
+					} 
+                                        else 
+                                        {
+                                            String[] instr = 
+                                                { 
+                                                    "CREATE LYLE OBJ",
+                                                    "WRITE LYLE OBJ 1", "READ LYLE OBJ",
+                                                    "DESTROY LYLE OBJ", "RUN LYLE" 
+                                                };
+                                            //Si generoLog está en false, no escribo en log
+                                            if (generoLog) 
+                                            {
+                                                String log = Arrays.toString(instr);
+                                                byte[] resultadoLog = log.getBytes();
+                                                logger.write(resultadoLog);
+                                                logger.write(nuevaLinea);
+                                            }
+                                            SecureSystem.passInstructions(instr);
 					}
 				}
-				// Write byte to out file, then reset the run manager for the
-				// next byte
-				numOfBytes--;
-				String result = ReferenceMonitor.obtenerEjecucion();
-				byte[] resultArray = result.getBytes();
+                                // Escribo en el archivo de salida
+				numeroDeBytes--;
+				String resultado = ReferenceMonitor.obtenerEjecucion();
+				byte[] resultArray = resultado.getBytes();
 				fos.write(resultArray);
-				ReferenceMonitor.obtenerEjecuciones().put("LYLE", "temp");
+				ReferenceMonitor.obtenerEjecuciones().put("lyle", "temp");
 			}
-			fos.write(newLine);
+			fos.write(nuevaLinea);
 		}
-		final long endTime = System.currentTimeMillis();
+		final long tiempoFin = System.currentTimeMillis();
 
-		// Compute bandwidth
+		// Resumen de ejecución
 		double bytes = file2.length();
-		long bandwidth = numOfBits / (endTime - startTime);
+		long bandwidth = numOfBits / (tiempoFin - tiempoInicio);
 		System.out.println("Document: " + file2.getName());
 		System.out.println("Size: " + bytes + " bytes");
 		System.out.println("Bandwidth: " + bandwidth + " bits/ms");
 		scan.close();
 		fos.close();
-		if (verbose){
+                
+		if (generoLog){
                     logger.close();
                 }
                 
